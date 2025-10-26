@@ -1,0 +1,456 @@
+<!-- Menú lateral -->
+<div class="container">
+  <aside>
+    <div class="top">
+      <div class="logo">
+        <img src="favicon.png" alt="logo" />
+        <h2 class="noml">Corpogam</h2>
+      </div>
+      <div class="close" id="close-btn">
+        <span><i class="pi pi-times"></i></span>
+      </div>
+    </div>
+
+    <div class="sidebar">
+     <a href="/dashboard" >
+                    <span><i class="fa-regular fa-house"></i></span>
+                    <h3>Inicio</h3>
+                </a>
+                <a href="/registro" class="active">
+                    <span><i class="fa-regular fa-rectangle-list"></i></span>
+                    <h3>Registro</h3>
+                </a>
+                <a href="/vacunas">
+                    <span><i class="fa-solid fa-syringe"></i></span>
+                    <h3>Vacunas</h3>
+                </a>
+
+                <a href="/animales">
+                    <span><i class="fa-solid fa-cow"></i></span>
+                    <h3>Animales</h3>
+                </a>
+                <a href="/semaforo" >
+                    <span><i class="fa-solid fa-traffic-light"></i></span>
+                    <h3>Semaforo</h3>
+                </a>
+                <a href="#">
+                    <span><i class="fa-solid fa-chart-simple"></i></span>
+                    <h3>Reportes</h3>
+                </a>
+                <a href="#">
+                    <span><i class="fa-solid fa-right-from-bracket"></i></span>
+                    <h3>Cerrar Sesion</h3>
+                </a>
+    </div>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main>
+    <h1>Bienvenido al registro de Animales</h1>
+
+    <div class="date">
+      <p>{{ fechaActual }}, {{ horaActual }}</p>
+    </div>
+
+    <!-- Selector de opciones mejorado -->
+    <div class="selector-container">
+      <div class="selector-opciones">
+        <div class="opcion-item" [class.active]="modoSeleccionado === 'formulario'">
+          <p-radiobutton name="modo" value="formulario" [(ngModel)]="modoSeleccionado" inputId="formulario" />
+          <label for="formulario">
+            <i class="fa-solid fa-file-lines"></i>
+            <span>Completar formulario</span>
+          </label>
+        </div>
+
+        <div class="opcion-item" [class.active]="modoSeleccionado === 'csv'">
+          <p-radiobutton name="modo" value="csv" [(ngModel)]="modoSeleccionado" inputId="csv" />
+          <label for="csv">
+            <i class="fa-solid fa-file-csv"></i>
+            <span>Subir archivo CSV</span>
+          </label>
+        </div>
+
+        <div class="opcion-item" [class.active]="modoSeleccionado === 'vacunas'">
+          <p-radiobutton name="modo" value="vacunas" [(ngModel)]="modoSeleccionado" inputId="vacunas" />
+          <label for="vacunas">
+            <i class="fa-solid fa-syringe"></i>
+            <span>Registrar vacunas</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenido dinámico con animación -->
+    <div class="contenido-dinamico">
+
+      <!-- FORMULARIO DE ANIMALES -->
+      <div class="card-formulario" *ngIf="modoSeleccionado === 'formulario'" @fadeIn>
+        <div class="card-header">
+          <i class="fa-solid fa-cow"></i>
+          <h2>Formulario de Registro de Animales</h2>
+        </div>
+
+        <form (ngSubmit)="registrarAnimal()" #formAnimal="ngForm" class="formulario-moderno">
+
+          <!-- SECCIÓN: IDENTIFICACIÓN -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="fa-solid fa-id-card"></i>
+              Identificación del Animal
+            </h3>
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="codigo">
+                  <i class="fa-solid fa-barcode"></i>
+                  Código del Animal *
+                </label>
+                <input id="codigo" type="text" pInputText [(ngModel)]="formData.codigo" name="codigo"
+                  placeholder="Ej: COW-001" required [disabled]="isSubmitting" />
+              </div>
+
+              <div class="form-field">
+                <label for="numeroArete">
+                  <i class="fa-solid fa-tag"></i>
+                  Número de Arete
+                </label>
+                <input id="numeroArete" type="text" pInputText [(ngModel)]="formData.numeroArete" name="numeroArete"
+                  placeholder="Ej: A-12345" [disabled]="isSubmitting" />
+              </div>
+
+              <div class="form-field">
+                <label for="chipRfid">
+                  <i class="fa-solid fa-microchip"></i>
+                  Chip RFID
+                </label>
+                <input id="chipRfid" type="text" pInputText [(ngModel)]="formData.chipRfid" name="chipRfid"
+                  placeholder="Ej: RFID-123456789" [disabled]="isSubmitting" />
+              </div>
+
+              <div class="form-field">
+                <label for="alias">
+                  <i class="fa-solid fa-signature"></i>
+                  Alias/Nombre *
+                </label>
+                <input id="alias" type="text" pInputText [(ngModel)]="formData.alias" name="alias"
+                  placeholder="Ej: Manchita" required [disabled]="isSubmitting" />
+              </div>
+            </div>
+          </div>
+
+          <!-- SECCIÓN: CARACTERÍSTICAS -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="fa-solid fa-info-circle"></i>
+              Características Físicas
+            </h3>
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="sexo">
+                  <i class="fa-solid fa-venus-mars"></i>
+                  Sexo *
+                </label>
+                <select id="sexo" pInputText [(ngModel)]="formData.sexo" name="sexo" required [disabled]="isSubmitting"
+                  class="input-select">
+                  <option value="">Seleccionar...</option>
+                  <option value="Macho">Macho</option>
+                  <option value="Hembra">Hembra</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label for="fechaNacimiento">
+                  <i class="fa-solid fa-calendar-day"></i>
+                  Fecha de Nacimiento *
+                </label>
+                <input id="fechaNacimiento" type="date" pInputText [(ngModel)]="formData.fechaNacimiento"
+                  name="fechaNacimiento" required [disabled]="isSubmitting" />
+              </div>
+
+              <div class="form-field">
+                <label for="raza">
+                  <i class="fa-solid fa-dna"></i>
+                  Raza
+                </label>
+                <input id="raza" type="text" pInputText [(ngModel)]="formData.raza" name="raza"
+                  placeholder="Ej: Holstein" [disabled]="isSubmitting" />
+              </div>
+
+              <div class="form-field">
+                <label for="color">
+                  <i class="fa-solid fa-palette"></i>
+                  Color
+                </label>
+                <input id="color" type="text" pInputText [(ngModel)]="formData.color" name="color"
+                  placeholder="Ej: Blanco con manchas negras" [disabled]="isSubmitting" />
+              </div>
+
+              <div class="form-field">
+                <label for="pesoInicial">
+                  <i class="fa-solid fa-weight-scale"></i>
+                  Peso Inicial (kg) *
+                </label>
+                <input id="pesoInicial" type="number" pInputText [(ngModel)]="formData.pesoInicial" name="pesoInicial"
+                  placeholder="Ej: 450" min="0" step="0.1" required [disabled]="isSubmitting" />
+              </div>
+
+              <div class="form-field">
+                <label for="estado">
+                  <i class="fa-solid fa-circle-check"></i>
+                  Estado
+                </label>
+                <select id="estado" pInputText [(ngModel)]="formData.estado" name="estado" [disabled]="isSubmitting"
+                  class="input-select">
+                  <option value="">Seleccionar...</option>
+                  <option value="VIVO">Vivo</option>
+                  <option value="ENFERMO">Enfermo</option>
+                  <option value="VENDIDO">Vendido</option>
+                  <option value="MUERTO">Muerto</option>
+                  
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECCIÓN: BAJA (OPCIONAL) -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="fa-solid fa-circle-minus"></i>
+              Información de Baja (Opcional)
+            </h3>
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="fechaBaja">
+                  <i class="fa-solid fa-calendar-xmark"></i>
+                  Fecha de Baja
+                </label>
+                <input id="fechaBaja" type="date" pInputText [(ngModel)]="formData.fechaBaja" name="fechaBaja"
+                  [disabled]="isSubmitting" />
+              </div>
+
+              <div class="form-field full-width">
+                <label for="motivoBaja">
+                  <i class="fa-solid fa-file-lines"></i>
+                  Motivo de Baja
+                </label>
+                <textarea id="motivoBaja" pInputText [(ngModel)]="formData.motivoBaja" name="motivoBaja"
+                  placeholder="Descripción del motivo de baja..." rows="3" [disabled]="isSubmitting"
+                  class="textarea-field"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECCIÓN: GENEALOGÍA -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="fa-solid fa-sitemap"></i>
+              Información Genealógica
+            </h3>
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="padre">
+                  <i class="fa-solid fa-mars"></i>
+                  Padre
+                </label>
+                <input id="padre" type="text" pInputText [(ngModel)]="formData.padre" name="padre"
+                  placeholder="Código o nombre del padre" [disabled]="isSubmitting" />
+              </div>
+
+              <div class="form-field">
+                <label for="madre">
+                  <i class="fa-solid fa-venus"></i>
+                  Madre
+                </label>
+                <input id="madre" type="text" pInputText [(ngModel)]="formData.madre" name="madre"
+                  placeholder="Código o nombre de la madre" [disabled]="isSubmitting" />
+              </div>
+            </div>
+          </div>
+
+          <!-- SECCIÓN: UBICACIÓN -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="fa-solid fa-location-dot"></i>
+              Información de Ubicación
+            </h3>
+            <div class="form-grid">
+              <div class="form-field">
+  <label for="lugarNacimiento">
+    <i class="fa-solid fa-map-pin"></i>
+    Lugar de Nacimiento
+  </label>
+  <input 
+    id="lugarNacimiento" 
+    type="text" 
+    pInputText 
+    [(ngModel)]="formData.lugarNacimiento"
+    name="lugarNacimiento" 
+    placeholder="Ej: Finca La Esperanza" 
+    [disabled]="isSubmitting" 
+  />
+</div>
+
+<div class="form-field">
+  <label for="procedencia">
+    <i class="fa-solid fa-truck"></i>
+    Procedencia
+  </label>
+  <input 
+    id="procedencia" 
+    type="text" 
+    pInputText 
+    [(ngModel)]="formData.procedencia"
+    name="procedencia" 
+    placeholder="Ej: Compra, Nacimiento propio" 
+    [disabled]="isSubmitting" 
+  />
+</div>
+
+              <div class="form-field">
+                <label for="ubicacion">
+                  <i class="fa-solid fa-map-location-dot"></i>
+                  Ubicación Actual
+                </label>
+                <input id="ubicacion" type="text" pInputText [(ngModel)]="formData.ubicacion" name="ubicacion"
+                  placeholder="Ej: Potrero 3, Establo A" [disabled]="isSubmitting" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button pButton type="submit" [label]="isSubmitting ? 'Guardando...' : 'Guardar Animal'" icon="pi pi-check"
+              class="btn-submit" [disabled]="isSubmitting"></button>
+
+            <button pButton type="button" label="Limpiar Formulario" icon="pi pi-times" class="btn-secondary"
+              (click)="limpiarFormularioAnimal()" [disabled]="isSubmitting"></button>
+          </div>
+        </form>
+      </div>
+
+      <!-- SUBIDA DE CSV -->
+      <div class="card-formulario" *ngIf="modoSeleccionado === 'csv'" @fadeIn>
+        <div class="card-header">
+          <i class="fa-solid fa-file-arrow-up"></i>
+          <h2>Cargar Archivo CSV</h2>
+        </div>
+
+        <div class="upload-container">
+          <p-toast></p-toast>
+          <p-fileUpload name="archivos[]" (onUpload)="onUpload($event)" customUpload="true" [multiple]="false"
+            accept=".csv" maxFileSize="50000000" chooseLabel="Seleccionar Archivo" uploadLabel="Enviar"
+            cancelLabel="Cancelar" mode="advanced" [disabled]="isUploading">
+            <ng-template pTemplate="content">
+              <div class="upload-info">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <p>Arrastra y suelta tu archivo CSV aquí</p>
+                <span class="upload-hint">o haz clic para seleccionar</span>
+              </div>
+            </ng-template>
+          </p-fileUpload>
+
+          <div class="upload-instructions">
+            <h4><i class="fa-solid fa-circle-info"></i> Instrucciones:</h4>
+            <ul>
+              <li>El archivo debe estar en formato CSV</li>
+              <li>Columnas requeridas: código, nombre, edad, raza</li>
+              <li>Tamaño máximo: 5 MB</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORMULARIO DE VACUNAS -->
+      <div class="card-formulario" *ngIf="modoSeleccionado === 'vacunas'" @fadeIn>
+        <div class="card-header">
+          <i class="fa-solid fa-syringe"></i>
+          <h2>Registro de Vacunas</h2>
+        </div>
+
+        <form (ngSubmit)="registrarVacuna()" #formVacuna="ngForm" class="formulario-moderno">
+          <div class="form-grid">
+            <!-- Seleccionar Animal -->
+            <div class="form-field">
+              <label for="idAnimal">
+                <i class="fa-solid fa-cow"></i>
+                Animal *
+              </label>
+              <select id="idAnimal" pInputText [(ngModel)]="formVacunaData.idAnimal" name="idAnimal" required
+                [disabled]="isSubmitting" class="input-select">
+                <option value="0">Seleccionar animal...</option>
+                <option *ngFor="let animal of animales" [value]="animal.id_animal">
+                  {{animal.codigo_animal}} - {{animal.alias}}
+                </option>
+              </select>
+            </div>
+
+            <!-- Seleccionar Vacuna -->
+            <div class="form-field">
+              <label for="idVacuna">
+                <i class="fa-solid fa-syringe"></i>
+                Vacuna *
+              </label>
+              <select id="idVacuna" pInputText [(ngModel)]="formVacunaData.idVacuna" name="idVacuna" required
+                [disabled]="isSubmitting" class="input-select">
+                <option value="0">Seleccionar vacuna...</option>
+                <option *ngFor="let vacuna of catalogoVacunas" [value]="vacuna.id_vacuna">
+                  {{vacuna.nombre}}
+                </option>
+              </select>
+            </div>
+
+            <!-- Fecha de Aplicación -->
+            <div class="form-field">
+              <label for="fechaAplicacion">
+                <i class="fa-solid fa-calendar-check"></i>
+                Fecha de Aplicación *
+              </label>
+              <input id="fechaAplicacion" type="date" pInputText [(ngModel)]="formVacunaData.fechaAplicacion"
+                name="fechaAplicacion" required [disabled]="isSubmitting" />
+            </div>
+
+            <!-- Próxima Dosis (Opcional) -->
+            <div class="form-field">
+              <label for="proximaDosis">
+                <i class="fa-solid fa-calendar-plus"></i>
+                Próxima Dosis
+              </label>
+              <input id="proximaDosis" type="date" pInputText [(ngModel)]="formVacunaData.proximaDosis"
+                name="proximaDosis" [disabled]="isSubmitting" />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button pButton type="submit" [label]="isSubmitting ? 'Registrando...' : 'Registrar Vacuna'"
+              icon="pi pi-check" class="btn-submit btn-vacuna"
+              [disabled]="isSubmitting || formVacunaData.idAnimal === 0 || formVacunaData.idVacuna === 0"></button>
+
+            <button pButton type="button" label="Limpiar" icon="pi pi-times" class="btn-secondary"
+              (click)="limpiarFormularioVacuna()" [disabled]="isSubmitting"></button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Tabla o semáforo -->
+
+      <!-- Barra superior -->
+      <div class="barra">
+        <div class="top">
+          <button id="menu_btn">
+            <span><i class="fa-solid fa-bars"></i></span>
+          </button>
+          <div class="theme-toggler">
+            <span><i class="fa-solid fa-sun active"></i></span>
+            <span><i class="fa-solid fa-moon"></i></span>
+          </div>
+          <div class="perfil">
+            <div class="info">
+              <p>Hola, <b>Jeanpi</b></p>
+              <small class="text-muted">Administrador</small>
+            </div>
+            <div class="foto_perfil">
+              <img src="Perfil Admin.png" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

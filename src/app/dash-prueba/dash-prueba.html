@@ -1,0 +1,50 @@
+<div class="registro-container">
+  <h2>Registrar Animal</h2>
+
+  <!-- Selector de opción -->
+  <div class="opciones">
+    <label>
+      <input type="radio" name="modo" value="formulario" [(ngModel)]="modoSeleccionado">
+      Formulario
+    </label>
+    <label>
+      <input type="radio" name="modo" value="archivo" [(ngModel)]="modoSeleccionado">
+      Archivo CSV
+    </label>
+  </div>
+
+  <!-- Vista del formulario -->
+  <div *ngIf="modoSeleccionado === 'formulario'">
+    <form>
+      <div>
+        <label for="codigo">Código Animal</label>
+        <input id="codigo" type="text" />
+      </div>
+
+      <div>
+        <label for="nombre">Nombre</label>
+        <input id="nombre" type="text" />
+      </div>
+
+      <div>
+        <label for="raza">Raza</label>
+        <input id="raza" type="text" />
+      </div>
+
+      <div>
+        <label for="fecha">Fecha de nacimiento</label>
+        <input id="fecha" type="date" />
+      </div>
+
+      <button type="submit">Registrar</button>
+    </form>
+  </div>
+
+  <!-- Vista de carga de archivo -->
+  <div *ngIf="modoSeleccionado === 'archivo'">
+    <div class="upload-box">
+      <p>Sube tu archivo CSV con los datos de los animales</p>
+      <input type="file" accept=".csv" />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,171 @@
+<div class="container">
+  <aside>
+    <div class="top">
+      <div class="logo">
+        <img src="favicon.png" alt="logo">
+        <h2 class="noml">Corpogam</h2>
+      </div>
+      <div class="close" id="close-btn">
+        <span><i class="pi pi-times"></i></span>
+      </div>
+    </div>
+
+    <div class="sidebar">
+    <a href="/dashboard" >
+                    <span><i class="fa-regular fa-house"></i></span>
+                    <h3>Inicio</h3>
+                </a>
+                <a href="/registro">
+                    <span><i class="fa-regular fa-rectangle-list"></i></span>
+                    <h3>Registro</h3>
+                </a>
+                <a href="/vacunas">
+                    <span><i class="fa-solid fa-syringe"></i></span>
+                    <h3>Vacunas</h3>
+                </a>
+
+                <a href="/animales">
+                    <span><i class="fa-solid fa-cow"></i></span>
+                    <h3>Animales</h3>
+                </a>
+                <a href="/semaforo" class="active">
+                    <span><i class="fa-solid fa-traffic-light"></i></span>
+                    <h3>Semaforo</h3>
+                </a>
+                <a href="#">
+                    <span><i class="fa-solid fa-chart-simple"></i></span>
+                    <h3>Reportes</h3>
+                </a>
+                <a href="#">
+                    <span><i class="fa-solid fa-right-from-bracket"></i></span>
+                    <h3>Cerrar Sesion</h3>
+                </a>
+    </div>
+  </aside>
+
+  <main>
+    <h1>Bienvenido, al estado de Vacunas</h1>
+
+    <div class="date">
+      <p>{{ fechaActual }}, {{ horaActual }}</p>
+    </div>
+
+    <!-- Mensaje de carga -->
+    <div *ngIf="cargando" class="loading">Cargando vacunas...</div>
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+
+    <!-- Vacunas a Tiempo (Verde) -->
+    <div class="tbl_semaforo">
+      <h2>Vacunas a Tiempo ({{ vacunasATiempo.length }})</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Código del Animal</th>
+            <th>Alias</th>
+            <th>Vacuna</th>
+            <th>Fecha de Aplicación</th>
+            <th>Próxima Dosis</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let vacuna of vacunasATiempo">
+            <td>{{ vacuna.codigo_animal }}</td>
+            <td>{{ vacuna.alias }}</td>
+            <td>{{ vacuna.nombre_vacuna }}</td>
+            <td>{{ formatearFecha(vacuna.fecha_aplicacion) }}</td>
+            <td>{{ formatearFecha(vacuna.proxima_dosis) }}</td>
+            <td class="success">{{ obtenerEstadoTexto(vacuna) }}</td>
+          </tr>
+          <tr *ngIf="vacunasATiempo.length === 0">
+            <td colspan="6" style="text-align: center;">No hay vacunas en este estado</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+    </div>
+
+    <!-- Vacunas Próximas a Vencer (Amarillo) -->
+    <div class="tbl_semaforo">
+      <h2>Vacunas Próximas a Vencer ({{ vacunasProximas.length }})</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Código del Animal</th>
+            <th>Alias</th>
+            <th>Vacuna</th>
+            <th>Fecha de Aplicación</th>
+            <th>Próxima Dosis</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let vacuna of vacunasProximas">
+            <td>{{ vacuna.codigo_animal }}</td>
+            <td>{{ vacuna.alias }}</td>
+            <td>{{ vacuna.nombre_vacuna }}</td>
+            <td>{{ formatearFecha(vacuna.fecha_aplicacion) }}</td>
+            <td>{{ formatearFecha(vacuna.proxima_dosis) }}</td>
+            <td class="warning">Próximo a Vencer</td>
+          </tr>
+          <tr *ngIf="vacunasProximas.length === 0">
+            <td colspan="6" style="text-align: center;">No hay vacunas en este estado</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+    </div>
+
+    <!-- Vacunas Vencidas (Rojo) -->
+    <div class="tbl_semaforo">
+      <h2>Vacunas Vencidas ({{ vacunasVencidas.length }})</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Código del Animal</th>
+            <th>Alias</th>
+            <th>Vacuna</th>
+            <th>Fecha de Aplicación</th>
+            <th>Próxima Dosis</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let vacuna of vacunasVencidas">
+            <td>{{ vacuna.codigo_animal }}</td>
+            <td>{{ vacuna.alias }}</td>
+            <td>{{ vacuna.nombre_vacuna }}</td>
+            <td>{{ formatearFecha(vacuna.fecha_aplicacion) }}</td>
+            <td>{{ formatearFecha(vacuna.proxima_dosis) }}</td>
+            <td class="danger">Vencida - Urgente</td>
+          </tr>
+          <tr *ngIf="vacunasVencidas.length === 0">
+            <td colspan="6" style="text-align: center;">No hay vacunas en este estado</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+    </div>
+  </main>
+
+  <div class="barra">
+    <div class="top">
+      <button id="menu_btn">
+        <span><i class="fa-solid fa-bars"></i></span>
+      </button>
+      <div class="theme-toggler">
+        <span><i class="fa-solid fa-sun active"></i></span>
+        <span><i class="fa-solid fa-moon"></i></span>
+      </div>
+      <div class="perfil">
+        <div class="info">
+          <p>Hola, <b>Jeanpi</b></p>
+          <small class="text-muted">Administrador</small>
+        </div>
+        <div class="foto_perfil">
+          <img src="Perfil Admin.png" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

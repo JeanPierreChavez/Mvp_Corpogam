@@ -1,0 +1,85 @@
+
+<div class="registro-container card">
+  <h2 class="registro-title">
+    <i class="pi pi-cow"></i> Registro del Animal
+  </h2>
+
+  <div class="registro-form grid">
+    <!-- Fecha -->
+    <div class="form-field">
+      <label for="fecha">📅 Fecha</label>
+      <p-datepicker
+        id="fecha"
+        [(ngModel)]="date" 
+        placeholder="Fecha de Nacimiento"
+        [showIcon]="true"
+        dateFormat="dd/mm/yy" 
+        class="w-full">
+      </p-datepicker>
+    </div>
+
+    <!-- Código del Animal -->
+    <div class="form-field" style="margin-top: 28px;">
+      <p-floatlabel>
+        <input 
+          pInputText 
+          id="codigo" 
+          [(ngModel)]="value2" 
+          autocomplete="off" 
+          class="w-full"/>
+        <label for="codigo">Código del Animal</label>
+      </p-floatlabel>
+    </div>
+
+    <!-- Sexo -->
+    <div class="form-field">
+      <label for="sexo">⚧ Sexo</label>
+      <p-select
+        id="sexo"
+        [options]="sexo" 
+        [(ngModel)]="seleccionesexo" 
+        optionLabel="name" 
+        placeholder="Seleccione sexo" 
+        class="w-full">
+      </p-select>
+    </div>
+
+    <!-- Estado -->
+    <div class="form-field">
+      <label for="estado">📌 Estado</label>
+      <p-select
+        id="estado"
+        [options]="estados" 
+        [(ngModel)]="seleccioneestado" 
+        optionLabel="name" 
+        placeholder="Seleccione estado" 
+        class="w-full">
+      </p-select>
+    </div>
+  </div>
+ <!-- Botones -->
+  <div class="registro-actions">
+    <p-button 
+      label="Cancelar" 
+      icon="pi pi-times" 
+      severity="secondary"/>
+    <p-button 
+      label="Guardar" 
+      icon="pi pi-check" 
+      severity="success"/>
+  </div>    
+</div>
+
+<div class="card">
+    <p-toast />
+    <p-fileupload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($event)" [multiple]="true" accept=".csv" maxFileSize="500000000" mode="advanced">
+        <ng-template #empty>
+            <div>Drag and drop files to here to upload.</div>
+        </ng-template>
+    </p-fileupload>
+</div>
+
+
+
+
+

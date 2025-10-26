@@ -1,0 +1,212 @@
+<!--Esta es la parte del menu-->
+<html>
+
+<body>
+    <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                    <img src="favicon.png" alt="logo">
+                    <h2 class="noml">Corpogam</h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span><i class="pi pi-times"></i></span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a href="/dashboard" class="active">
+                    <span><i class="fa-regular fa-house"></i></span>
+                    <h3>Inicio</h3>
+                </a>
+                <a href="/registro">
+                    <span><i class="fa-regular fa-rectangle-list"></i></span>
+                    <h3>Registro</h3>
+                </a>
+                <a href="/vacunas">
+                    <span><i class="fa-solid fa-syringe"></i></span>
+                    <h3>Vacunas</h3>
+                </a>
+
+                <a href="/animales">
+                    <span><i class="fa-solid fa-cow"></i></span>
+                    <h3>Animales</h3>
+                </a>
+                <a href="/semaforo" >
+                    <span><i class="fa-solid fa-traffic-light"></i></span>
+                    <h3>Semaforo</h3>
+                </a>
+                <a href="#">
+                    <span><i class="fa-solid fa-chart-simple"></i></span>
+                    <h3>Reportes</h3>
+                </a>
+                <a href="#">
+                    <span><i class="fa-solid fa-right-from-bracket"></i></span>
+                    <h3>Cerrar Sesion</h3>
+                </a>
+            </div>
+        </aside>
+        <!--Y aqui termina el menu-->
+        <main>
+            <h1>Bienvenido, Usuario</h1>
+
+            <div class="date">
+                <p>{{ fechaActual }}, {{ horaActual }}</p>
+
+            </div>
+
+            <div class="insights">
+                <div class="animales">
+                    <span><i class="fa-solid fa-bugs"></i></span>
+                    <div class="middle">
+                        <div class="lef">
+                            <h3>Animales Registrados</h3>
+                            <h1>{{ animales.length }}</h1>
+                        </div>
+                        <div class="progress">
+                            <svg>
+                                <circle cx='38' cy='38' r='36'></circle>
+                            </svg>
+                            <div class="number">
+                                <p>81%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#">Mas Informacion...</a>
+                </div>
+                <!--Fin del componente animales-->
+                <div class="reportes">
+                    <span><i class="fa-solid fa-sheet-plastic"></i></span>
+                    <div class="middle">
+                        <div class="lef">
+                            <h3>Reportes Generados</h3>
+                            <h1>14</h1>
+                        </div>
+                        <div class="progress">
+                            <svg>
+                                <circle cx='38' cy='38' r='36'></circle>
+                            </svg>
+                            <div class="number">
+                                <p>81%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#">Mas Informacion...</a>
+                </div>
+                <!--Fin del componente reportes-->
+
+                <div class="semaforo">
+                    <span><i class="fa-solid fa-circle-exclamation"></i></span>
+                    <div class="middle">
+                        <div class="lef">
+                            <h3>Vacunas Vencidas</h3>
+                            <h1>{{ vacunasUrgentes.length }}</h1>
+                        </div>
+                        <div class="progress">
+                            <svg>
+                                <circle cx='38' cy='38' r='36'></circle>
+                            </svg>
+                            <div class="number">
+                                <p>{{ vacunasUrgentes.length > 0 ? 'Urgente' : 'OK' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/semaforo">Mas Información...</a>
+                </div>
+                <!--Fin del componente semaforo-->
+            </div>
+            <!--Terminan las tarjetas-->
+            <div class="tbl_semaforo">
+                <h2>Semáforo de Vacunas (Urgentes)</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código del Animal</th>
+                            <th>Alias</th>
+                            <th>Vacuna</th>
+                            <th>Fecha de Aplicación</th>
+                            <th>Próxima Dosis</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let vacuna of vacunasUrgentes">
+                            <td>{{ vacuna.codigo_animal }}</td>
+                            <td>{{ vacuna.alias }}</td>
+                            <td>{{ vacuna.nombre_vacuna }}</td>
+                            <td>{{ formatearFecha(vacuna.fecha_aplicacion) }}</td>
+                            <td>{{ formatearFecha(vacuna.proxima_dosis) }}</td>
+                            <td [ngClass]="obtenerClaseEstado(vacuna.estado_vacunacion)">
+                                {{ vacuna.estado_vacunacion }}
+                            </td>
+                        </tr>
+                        <tr *ngIf="vacunasUrgentes.length === 0">
+                            <td colspan="6" style="text-align: center;">
+                                No hay vacunas urgentes en este momento
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <a href="/semaforo" style="float: right;">Ver todas las vacunas →</a>
+            </div>
+        </main>
+        <!--Finalizo la tabla -->
+        <div class="barra">
+            <div class="top">
+                <button id="menu_btn">
+                    <span><i class="fa-solid fa-bars"></i></span>
+                </button>
+                <div class="theme-toggler"> <!--Esta parte es el modo Dark-->
+                    <span><i class="fa-solid fa-sun active"></i></span>
+                    <span><i class="fa-solid fa-moon"></i></span>
+                </div>
+                <div class="perfil">
+                    <div class="info">
+                        <p>Hola, <b>Jeanpi</b></p>
+                        <small class="text-muted">Administrador</small>
+                    </div>
+                    <div class="foto_perfil">
+                        <img src="Perfil Admin.png" alt="">
+                    </div>
+                </div>
+            </div>
+            <!--Fin de la barra superior-->
+            <div class="notificaciones">
+                <h2>Notificaciones</h2>
+                <div class="updates">
+                    <div class="update">
+                        <div class="foto_not">
+                            <span><i class="fa-solid fa-circle-exclamation"></i></span>
+                        </div>
+                        <div class="mensaje">
+                            <p><b>Peligro</b>La Vaca 36023 paso su fecha maxima de Vacunacion</p>
+                            <small class="text-muted">Mensaje enviado hace 2 minutos</small>
+                        </div>
+                    </div>
+                    <div class="update">
+                        <div class="foto_not">
+                            <span><i class="fa-solid fa-triangle-exclamation"></i></span>
+                        </div>
+                        <div class="mensaje">
+                            <p><b>Advertencia</b>La Vaca 36023 paso su fecha maxima de Vacunacion</p>
+                            <small class="text-muted">Mensaje enviado hace 8 minutos</small>
+                        </div>
+                    </div>
+                    <div class="update">
+                        <div class="foto_not">
+                            <span><i class="fa-solid fa-note-sticky"></i></span>
+                        </div>
+                        <div class="mensaje">
+                            <p><b>Reporte generado</b>El reporte fue generado con exito</p>
+                            <small class="text-muted">Mensaje enviado hace 20 minutos</small>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

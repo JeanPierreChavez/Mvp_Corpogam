@@ -1,0 +1,178 @@
+<!--Esta es la parte del menu-->
+<html>
+
+<body>
+    <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                    <img src="favicon.png" alt="logo">
+                    <h2 class="noml">Corpogam</h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span><i class="pi pi-times"></i></span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                 <a href="/dashboard" >
+                    <span><i class="fa-regular fa-house"></i></span>
+                    <h3>Inicio</h3>
+                </a>
+                <a href="/registro">
+                    <span><i class="fa-regular fa-rectangle-list"></i></span>
+                    <h3>Registro</h3>
+                </a>
+                <a href="/vacunas" class="active">
+                    <span><i class="fa-solid fa-syringe"></i></span>
+                    <h3>Vacunas</h3>
+                </a>
+
+                <a href="/animales">
+                    <span><i class="fa-solid fa-cow"></i></span>
+                    <h3>Animales</h3>
+                </a>
+                <a href="/semaforo" >
+                    <span><i class="fa-solid fa-traffic-light"></i></span>
+                    <h3>Semaforo</h3>
+                </a>
+                <a href="#">
+                    <span><i class="fa-solid fa-chart-simple"></i></span>
+                    <h3>Reportes</h3>
+                </a>
+                <a href="#">
+                    <span><i class="fa-solid fa-right-from-bracket"></i></span>
+                    <h3>Cerrar Sesion</h3>
+                </a>
+            </div>
+        </aside>
+        <!--Y aqui termina el menu-->
+        <main>
+            <h1>Bienvenido, al registro de Vacunas</h1>
+
+            <div class="date">
+                <p>{{ fechaActual }}, {{ horaActual }}</p>
+
+            </div>
+             
+
+
+
+            <!--Terminan las tarjetas-->
+            <div class="tbl_semaforo">
+                <h2>Semaforo de Vacunas</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Codigo del Animal</th>
+                            <th>Vacuna</th>
+                            <th>Fecha de colocacion</th>
+                            <th>Fecha Maxima</th>
+                            <th>Estado</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2314234</td>
+                            <td>Pyzer123</td>
+                            <td></td>
+                            <td>04/10/2025</td>
+                            <td class="danger">Sin Vacunar</td>
+                            <td class="primary"><a href="">Ver mas..</a></td>
+                        </tr>
+                        <tr>
+                            <td>2314234</td>
+                            <td>Pyzer123</td>
+                            <td></td>
+                            <td>12/10/2025</td>
+                            <td class="warning">Sin Vacunar</td>
+                            <td class="primary"><a href="">Ver mas..</a></td>
+                        </tr>
+                        <tr>
+                            <td>2314234</td>
+                            <td>Pyzer123</td>
+                            <td>28/09/2025</td>
+                            <td>04/10/2025</td>
+                            <td class="success">Vacunada</td>
+                            <td class="primary"><a href="">Ver mas..</a></td>
+                        </tr>
+                        <tr>
+                            <td>2314234</td>
+                            <td>Pyzer123</td>
+                            <td>28/09/2025</td>
+                            <td>04/10/2025</td>
+                            <td class="success">Vacunada</td>
+                            <td class="primary"><a href="">Ver mas..</a></td>
+                        </tr>
+                        <tr>
+                            <td>2314234</td>
+                            <td>Pyzer123</td>
+                            <td>28/09/2025</td>
+                            <td>04/10/2025</td>
+                            <td class="success">Vacunada</td>
+                            <td class="primary"><a href="">Ver mas..</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+            </div>
+        </main>
+        <!--Finalizo la tabla -->
+        <div class="barra">
+            <div class="top">
+                <button id="menu_btn">
+                    <span><i class="fa-solid fa-bars"></i></span>
+                </button>
+                <div class="theme-toggler"> <!--Esta parte es el modo Dark-->
+                    <span><i class="fa-solid fa-sun active"></i></span>
+                    <span><i class="fa-solid fa-moon"></i></span>
+                </div>
+                <div class="perfil">
+                    <div class="info">
+                        <p>Hola, <b>Jeanpi</b></p>
+                        <small class="text-muted">Administrador</small>
+                    </div>
+                    <div class="foto_perfil">
+                        <img src="Perfil Admin.png" alt="">
+                    </div>
+                </div>
+            </div>
+            <!--Fin de la barra superior-->
+            <div class="notificaciones">
+                <h2>Notificaciones</h2>
+                <div class="updates">
+                    <div class="update">
+                        <div class="foto_not">
+                            <span><i class="fa-solid fa-circle-exclamation"></i></span>
+                        </div>
+                        <div class="mensaje">
+                            <p><b>Peligro</b>La Vaca 36023 paso su fecha maxima de Vacunacion</p>
+                            <small class="text-muted">Mensaje enviado hace 2 minutos</small>
+                        </div>
+                    </div>
+                    <div class="update">
+                        <div class="foto_not">
+                            <span><i class="fa-solid fa-triangle-exclamation"></i></span>
+                        </div>
+                        <div class="mensaje">
+                            <p><b>Advertencia</b>La Vaca 36023 paso su fecha maxima de Vacunacion</p>
+                            <small class="text-muted">Mensaje enviado hace 8 minutos</small>
+                        </div>
+                    </div>
+                    <div class="update">
+                        <div class="foto_not">
+                            <span><i class="fa-solid fa-note-sticky"></i></span>
+                        </div>
+                        <div class="mensaje">
+                            <p><b>Reporte generado</b>El reporte fue generado con exito</p>
+                            <small class="text-muted">Mensaje enviado hace 20 minutos</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

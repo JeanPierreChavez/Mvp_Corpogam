@@ -1,0 +1,198 @@
+
+<html>
+
+<body>
+   <div class="container">
+  <aside>
+    <div class="top">
+      <div class="logo">
+        <img src="favicon.png" alt="logo">
+        <h2 class="noml">Corpogam</h2>
+      </div>
+      <div class="close" id="close-btn">
+        <span><i class="pi pi-times"></i></span>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <a href="/dashboard" >
+                    <span><i class="fa-regular fa-house"></i></span>
+                    <h3>Inicio</h3>
+                </a>
+                <a href="/registro">
+                    <span><i class="fa-regular fa-rectangle-list"></i></span>
+                    <h3>Registro</h3>
+                </a>
+                <a href="/vacunas">
+                    <span><i class="fa-solid fa-syringe"></i></span>
+                    <h3>Vacunas</h3>
+                </a>
+
+                <a href="/animales" class="active">
+                    <span><i class="fa-solid fa-cow"></i></span>
+                    <h3>Animales</h3>
+                </a>
+                <a href="/semaforo" >
+                    <span><i class="fa-solid fa-traffic-light"></i></span>
+                    <h3>Semaforo</h3>
+                </a>
+                <a href="#">
+                    <span><i class="fa-solid fa-chart-simple"></i></span>
+                    <h3>Reportes</h3>
+                </a>
+                <a href="#">
+                    <span><i class="fa-solid fa-right-from-bracket"></i></span>
+                    <h3>Cerrar Sesion</h3>
+                </a>
+    </div>
+  </aside>
+
+  <main>
+    <h1>Listado de Animales</h1>
+
+    <div class="date">
+      <p>{{ fechaActual }}, {{ horaActual }}</p>
+    </div>
+
+    <!-- Indicador de carga -->
+    <div *ngIf="cargando" class="loading-container">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <p>Cargando animales...</p>
+    </div>
+
+    <!-- Tabla con scroll -->
+    <div class="tbl_semaforo" *ngIf="!cargando">
+      <div class="table-header">
+        <h2>Registro de Animales</h2>
+        <span class="total-badge">Total: {{ animales.length }} animales</span>
+      </div>
+
+    <div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Arete</th>
+        <th>Chip RFID</th>
+        <th>Alias</th>
+        <th>Sexo</th>
+        <th>F. Nacimiento</th>
+        <th>Raza</th>
+        <th>Color</th>
+        <th>Peso Inicial</th>
+        <th>Estado</th>
+        <th>F. Baja</th>
+        <th>Motivo Baja</th>
+        <th>Lugar Nac.</th>
+        <th>Procedencia</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let animal of animales">
+        <td><strong>{{ animal.codigo_animal }}</strong></td>
+        <td>{{ animal.arete_numero || 'N/A' }}</td>
+        <td>{{ animal.chip_rfid || 'N/A' }}</td>
+        <td>{{ animal.alias }}</td>
+        <td>
+          <span [class]="'badge-sexo ' + (animal.sexo === 'M' ? 'macho' : 'hembra')">
+            {{ formatearSexo(animal.sexo) }}
+          </span>
+        </td>
+        <td>{{ formatearFecha(animal.fecha_nacimiento) }}</td>
+        <td>{{ animal.raza || 'N/A' }}</td>
+        <td>{{ animal.color || 'N/A' }}</td>
+        <td>{{ animal.peso_inicial }} kg</td>
+        <td>
+          <span [class]="'badge-estado ' + animal.estado?.toLowerCase()">
+            {{ animal.estado }}
+          </span>
+        </td>
+        <td>{{ formatearFecha(animal.fecha_baja) }}</td>
+        <td>{{ animal.motivo_baja || 'N/A' }}</td>
+        <td>{{ animal.lugar_nacimiento || 'N/A' }}</td>
+        <td>{{ animal.procedencia || 'N/A' }}</td>
+        <td class="acciones-cell">
+  <button
+    pButton
+    type="button"
+    icon="pi pi-file-pdf"
+    class="p-button-rounded p-button-danger p-button-sm"
+    (click)="descargarFicha(animal)"
+    [loading]="animal.id_animal ? descargandoPDF[animal.id_animal] : false"
+    pTooltip="Descargar ficha PDF"
+    tooltipPosition="left"
+  ></button>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="animales.length === 0" class="empty-state">
+    <i class="fa-solid fa-inbox"></i>
+    <p>No hay animales registrados</p>
+  </div>
+</div>
+    </div>
+  </main>
+
+  <div class="barra">
+    <div class="top">
+      <button id="menu_btn">
+        <span><i class="fa-solid fa-bars"></i></span>
+      </button>
+      <div class="theme-toggler">
+        <span><i class="fa-solid fa-sun active"></i></span>
+        <span><i class="fa-solid fa-moon"></i></span>
+      </div>
+      <div class="perfil">
+        <div class="info">
+          <p>Hola, <b>Jeanpi</b></p>
+          <small class="text-muted">Administrador</small>
+        </div>
+        <div class="foto_perfil">
+          <img src="Perfil Admin.png" alt="">
+        </div>
+      </div>
+    </div>
+
+    <div class="notificaciones">
+      <h2>Notificaciones</h2>
+      <div class="updates">
+        <div class="update">
+          <div class="foto_not">
+            <span><i class="fa-solid fa-circle-exclamation"></i></span>
+          </div>
+          <div class="mensaje">
+            <p><b>Peligro</b> La Vaca 36023 paso su fecha maxima de Vacunacion</p>
+            <small class="text-muted">Mensaje enviado hace 2 minutos</small>
+          </div>
+        </div>
+        <div class="update">
+          <div class="foto_not">
+            <span><i class="fa-solid fa-triangle-exclamation"></i></span>
+          </div>
+          <div class="mensaje">
+            <p><b>Advertencia</b> La Vaca 36023 paso su fecha maxima de Vacunacion</p>
+            <small class="text-muted">Mensaje enviado hace 8 minutos</small>
+          </div>
+        </div>
+        <div class="update">
+          <div class="foto_not">
+            <span><i class="fa-solid fa-note-sticky"></i></span>
+          </div>
+          <div class="mensaje">
+            <p><b>Reporte generado</b> El reporte fue generado con exito</p>
+            <small class="text-muted">Mensaje enviado hace 20 minutos</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast para mensajes -->
+  <p-toast></p-toast>
+</div>
+</body>
+
+</html>
