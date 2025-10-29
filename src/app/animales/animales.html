@@ -47,94 +47,177 @@
     </div>
   </aside>
 
-  <main>
-    <h1>Listado de Animales</h1>
+<main>
+  <h1>Listado de Animales</h1>
 
-    <div class="date">
-      <p>{{ fechaActual }}, {{ horaActual }}</p>
+  <div class="date">
+    <p>{{ fechaActual }}, {{ horaActual }}</p>
+  </div>
+
+  <!-- Indicador de carga -->
+  <div *ngIf="cargando" class="loading-container">
+    <i class="fa-solid fa-spinner fa-spin"></i>
+    <p>Cargando animales...</p>
+  </div>
+
+  <!-- Tabla con scroll -->
+  <div class="tbl_semaforo" *ngIf="!cargando">
+    <div class="table-header">
+      <h2>Registro de Animales</h2>
+      <span class="total-badge">Total: {{ animales.length }} animales</span>
     </div>
-
-    <!-- Indicador de carga -->
-    <div *ngIf="cargando" class="loading-container">
-      <i class="fa-solid fa-spinner fa-spin"></i>
-      <p>Cargando animales...</p>
-    </div>
-
-    <!-- Tabla con scroll -->
-    <div class="tbl_semaforo" *ngIf="!cargando">
-      <div class="table-header">
-        <h2>Registro de Animales</h2>
-        <span class="total-badge">Total: {{ animales.length }} animales</span>
-      </div>
 
     <div class="table-container">
-  <table>
-    <thead>
-      <tr>
-        <th>Código</th>
-        <th>Arete</th>
-        <th>Chip RFID</th>
-        <th>Alias</th>
-        <th>Sexo</th>
-        <th>F. Nacimiento</th>
-        <th>Raza</th>
-        <th>Color</th>
-        <th>Peso Inicial</th>
-        <th>Estado</th>
-        <th>F. Baja</th>
-        <th>Motivo Baja</th>
-        <th>Lugar Nac.</th>
-        <th>Procedencia</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let animal of animales">
-        <td><strong>{{ animal.codigo_animal }}</strong></td>
-        <td>{{ animal.arete_numero || 'N/A' }}</td>
-        <td>{{ animal.chip_rfid || 'N/A' }}</td>
-        <td>{{ animal.alias }}</td>
-        <td>
-          <span [class]="'badge-sexo ' + (animal.sexo === 'M' ? 'macho' : 'hembra')">
-            {{ formatearSexo(animal.sexo) }}
-          </span>
-        </td>
-        <td>{{ formatearFecha(animal.fecha_nacimiento) }}</td>
-        <td>{{ animal.raza || 'N/A' }}</td>
-        <td>{{ animal.color || 'N/A' }}</td>
-        <td>{{ animal.peso_inicial }} kg</td>
-        <td>
-          <span [class]="'badge-estado ' + animal.estado?.toLowerCase()">
-            {{ animal.estado }}
-          </span>
-        </td>
-        <td>{{ formatearFecha(animal.fecha_baja) }}</td>
-        <td>{{ animal.motivo_baja || 'N/A' }}</td>
-        <td>{{ animal.lugar_nacimiento || 'N/A' }}</td>
-        <td>{{ animal.procedencia || 'N/A' }}</td>
-        <td class="acciones-cell">
-  <button
-    pButton
-    type="button"
-    icon="pi pi-file-pdf"
-    class="p-button-rounded p-button-danger p-button-sm"
-    (click)="descargarFicha(animal)"
-    [loading]="animal.id_animal ? descargandoPDF[animal.id_animal] : false"
-    pTooltip="Descargar ficha PDF"
-    tooltipPosition="left"
-  ></button>
-</td>
-      </tr>
-    </tbody>
-  </table>
+      <table>
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Arete</th>
+            <th>Chip RFID</th>
+            <th>Alias</th>
+            <th>Sexo</th>
+            <th>F. Nacimiento</th>
+            <th>Raza</th>
+            <th>Color</th>
+            <th>Peso Inicial</th>
+            <th>Estado</th>
+            <th>F. Baja</th>
+            <th>Motivo Baja</th>
+            <th>Lugar Nac.</th>
+            <th>Procedencia</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let animal of animales">
+            <td><strong>{{ animal.codigo_animal }}</strong></td>
+            <td>{{ animal.arete_numero || 'N/A' }}</td>
+            <td>{{ animal.chip_rfid || 'N/A' }}</td>
+            <td>{{ animal.alias }}</td>
+            <td>
+              <span [class]="'badge-sexo ' + (animal.sexo === 'M' ? 'macho' : 'hembra')">
+                {{ formatearSexo(animal.sexo) }}
+              </span>
+            </td>
+            <td>{{ formatearFecha(animal.fecha_nacimiento) }}</td>
+            <td>{{ animal.raza || 'N/A' }}</td>
+            <td>{{ animal.color || 'N/A' }}</td>
+            <td>{{ animal.peso_inicial }} kg</td>
+            <td>
+              <span [class]="'badge-estado ' + animal.estado?.toLowerCase()">
+                {{ animal.estado }}
+              </span>
+            </td>
+            <td>{{ formatearFecha(animal.fecha_baja) }}</td>
+            <td>{{ animal.motivo_baja || 'N/A' }}</td>
+            <td>{{ animal.lugar_nacimiento || 'N/A' }}</td>
+            <td>{{ animal.procedencia || 'N/A' }}</td>
+            <td class="acciones-cell">
+              <!-- Botón Ver Ficha Web -->
+              <button
+                pButton
+                type="button"
+                icon="pi pi-eye"
+                class="p-button-rounded p-button-info p-button-sm"
+                (click)="verFichaWeb(animal)"
+                pTooltip="Ver ficha web completa"
+                tooltipPosition="left"
+              ></button>
+              
+              <!-- Botón Descargar PDF -->
+              <button
+                pButton
+                type="button"
+                icon="pi pi-file-pdf"
+                class="p-button-rounded p-button-danger p-button-sm"
+                (click)="descargarFicha(animal)"
+                [loading]="animal.id_animal ? descargandoPDF[animal.id_animal] : false"
+                pTooltip="Descargar ficha PDF"
+                tooltipPosition="left"
+              ></button>
+              
+              <!-- Botón Ver/Descargar QR -->
+              <button
+                pButton
+                type="button"
+                icon="pi pi-qrcode"
+                class="p-button-rounded p-button-success p-button-sm"
+                (click)="mostrarQR(animal)"
+                pTooltip="Ver código QR público"
+                tooltipPosition="left"
+              ></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-  <div *ngIf="animales.length === 0" class="empty-state">
-    <i class="fa-solid fa-inbox"></i>
-    <p>No hay animales registrados</p>
-  </div>
-</div>
+      <div *ngIf="animales.length === 0" class="empty-state">
+        <i class="fa-solid fa-inbox"></i>
+        <p>No hay animales registrados</p>
+      </div>
     </div>
-  </main>
+  </div>
+</main>
+
+<!-- Modal para mostrar el QR -->
+<p-dialog 
+  [(visible)]="mostrarModalQR" 
+  [modal]="true" 
+  [style]="{width: '550px'}"
+  [draggable]="false"
+  [resizable]="false"
+  [header]="'Código QR - ' + (qrActual?.alias || '')"
+  (onHide)="cerrarModalQR()"
+>
+  <div class="qr-modal-content" *ngIf="qrActual">
+    <div class="animal-info">
+      <h3>{{ qrActual.alias }}</h3>
+      <p><strong>Código:</strong> {{ qrActual.codigo_animal }}</p>
+      <p><strong>Código Único:</strong> {{ qrActual.codigo_unico }}</p>
+    </div>
+    
+    <div class="qr-container">
+      <img [src]="qrActual.qr_code" alt="Código QR" class="qr-image">
+    </div>
+    
+    <div class="qr-url">
+      <p><strong>URL pública:</strong></p>
+      <input 
+        type="text" 
+        [value]="qrActual.url" 
+        readonly 
+        class="url-input"
+        (click)="$any($event.target).select()"
+      >
+      <p class="qr-info">
+        <i class="pi pi-info-circle"></i>
+        Esta URL permite ver la ficha del animal sin necesidad de autenticación
+      </p>
+    </div>
+    
+    <div class="qr-actions">
+      <button 
+        pButton 
+        label="Descargar QR" 
+        icon="pi pi-download" 
+        class="p-button-success"
+        (click)="descargarQRImagen()"
+      ></button>
+      <button 
+        pButton 
+        label="Copiar URL" 
+        icon="pi pi-copy" 
+        class="p-button-secondary"
+        (click)="copiarURL()"
+      ></button>
+    </div>
+  </div>
+
+  <div class="qr-loading" *ngIf="cargandoQR">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    <p>Generando código QR...</p>
+  </div>
+</p-dialog>
 
   <div class="barra">
     <div class="top">

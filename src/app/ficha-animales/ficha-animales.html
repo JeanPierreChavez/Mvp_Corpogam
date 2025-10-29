@@ -1,0 +1,256 @@
+<div class="ficha-publica-container">
+  <!-- Loading -->
+  <div *ngIf="cargando" class="loading-state">
+    <i class="pi pi-spin pi-spinner" style="font-size: 3rem"></i>
+    <p>Cargando ficha del animal...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error && !cargando" class="error-state">
+    <i class="pi pi-exclamation-triangle" style="font-size: 4rem"></i>
+    <h2>{{ error }}</h2>
+    <p>El código QR podría ser inválido o el animal fue eliminado del sistema.</p>
+    <button pButton label="Volver al inicio" icon="pi pi-home" routerLink="/dashboard"></button>
+  </div>
+
+  <!-- Ficha Completa -->
+  <div *ngIf="datos && !cargando" class="ficha-content">
+    
+    <!-- Header con acciones -->
+    <div class="ficha-header no-print">
+      <div class="header-info">
+        <img src="favicon.png" alt="Logo Corpogam" class="logo">
+        <div>
+          <h1>Ficha Técnica del Animal</h1>
+          <p class="subtitle">Sistema de Gestión Ganadera - Corpogam</p>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <button 
+          pButton 
+          label="Imprimir" 
+          icon="pi pi-print" 
+          class="p-button-secondary p-button-outlined"
+          (click)="imprimirFicha()"
+        ></button>
+        <button 
+          pButton 
+          label="Descargar PDF" 
+          icon="pi pi-download" 
+          class="p-button-danger"
+          (click)="descargarPDF()"
+        ></button>
+      </div>
+    </div>
+
+    <!-- Fecha del informe -->
+    <div class="fecha-informe">
+      <i class="pi pi-calendar"></i>
+      <span><strong>Fecha del informe:</strong> {{ datos.fecha_informe }}</span>
+    </div>
+
+    <!-- Sección 1: Identificación del Animal -->
+    <p-card styleClass="ficha-card">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <i class="pi pi-id-card"></i>
+          <h2>Identificación del Animal</h2>
+        </div>
+      </ng-template>
+
+      <div class="info-grid">
+        <div class="info-item destacado">
+          <label><i class="pi pi-tag"></i> Código:</label>
+          <span class="valor-destacado">{{ datos.codigo_animal }}</span>
+        </div>
+        
+        <div class="info-item destacado">
+          <label><i class="pi pi-bookmark"></i> Nombre (Alias):</label>
+          <span class="valor-destacado">{{ datos.alias }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>Sexo:</label>
+          <span [class]="'badge badge-' + datos.sexo?.toLowerCase()">
+            {{ datos.sexo_texto }}
+          </span>
+        </div>
+
+        <div class="info-item">
+          <label>Fecha de Nacimiento:</label>
+          <span>{{ formatearFecha(datos.fecha_nacimiento) }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>Edad:</label>
+          <span><strong>{{ datos.edad_en_meses }}</strong> meses</span>
+        </div>
+
+        <div class="info-item">
+          <label>Etapa de Vida:</label>
+          <span class="badge badge-etapa">{{ datos.etapa_actual }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>Raza:</label>
+          <span>{{ datos.raza || 'No especificada' }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>Color:</label>
+          <span>{{ datos.color || 'No especificado' }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>Estado:</label>
+          <span [class]="'badge badge-estado-' + datos.estado?.toLowerCase()">
+            {{ datos.estado }}
+          </span>
+        </div>
+
+        <div class="info-item">
+          <label>Peso Actual:</label>
+          <span>
+            <strong>{{ datos.ultimo_peso || 'N/A' }}</strong> 
+            <span *ngIf="datos.ultimo_peso"> kg</span>
+          </span>
+        </div>
+
+        <div class="info-item" *ngIf="datos.arete_numero">
+          <label>N° Arete:</label>
+          <span>{{ datos.arete_numero }}</span>
+        </div>
+
+        <div class="info-item" *ngIf="datos.chip_rfid">
+          <label>Chip RFID:</label>
+          <span>{{ datos.chip_rfid }}</span>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Sección 2: Genealogía y Ubicación -->
+    <p-card styleClass="ficha-card">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <i class="pi pi-sitemap"></i>
+          <h2>Genealogía y Ubicación</h2>
+        </div>
+      </ng-template>
+
+      <div class="info-grid">
+        <div class="info-item genealogia">
+          <label><i class="pi pi-user"></i> Padre:</label>
+          <span>{{ datos.codigo_padre || 'No registrado' }}</span>
+          <small *ngIf="datos.nombre_padre">({{ datos.nombre_padre }})</small>
+        </div>
+
+        <div class="info-item genealogia">
+          <label><i class="pi pi-user"></i> Madre:</label>
+          <span>{{ datos.codigo_madre || 'No registrado' }}</span>
+          <small *ngIf="datos.nombre_madre">({{ datos.nombre_madre }})</small>
+        </div>
+
+        <div class="info-item">
+          <label>Lugar de Nacimiento:</label>
+          <span>{{ datos.lugar_nacimiento || 'No registrado' }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>Procedencia:</label>
+          <span>{{ datos.procedencia || 'No registrada' }}</span>
+        </div>
+
+        <div class="info-item full-width">
+          <label><i class="pi pi-map-marker"></i> Finca / Ubicación:</label>
+          <span>
+            <strong>{{ datos.nombre_finca || 'Sin finca' }}</strong>
+            <span *ngIf="datos.ubicacion"> - {{ datos.ubicacion }}</span>
+          </span>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Sección 3: Historial de Vacunación -->
+    <p-card styleClass="ficha-card">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <i class="pi pi-shield"></i>
+          <h2>Historial de Vacunación</h2>
+        </div>
+      </ng-template>
+
+      <p-table 
+        [value]="datos.vacunas" 
+        styleClass="p-datatable-sm p-datatable-striped"
+        [paginator]="datos.vacunas?.length > 5"
+        [rows]="5"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} vacunas"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 60px">N°</th>
+            <th>Vacuna</th>
+            <th>Fecha de Aplicación</th>
+            <th>Próxima Dosis</th>
+            <th>Estado</th>
+          </tr>
+        </ng-template>
+        
+        <ng-template pTemplate="body" let-vacuna let-i="rowIndex">
+          <tr>
+            <td style="text-align: center">
+              <span class="numero-vacuna">{{ i + 1 }}</span>
+            </td>
+            <td><strong>{{ vacuna.nombre_vacuna }}</strong></td>
+            <td>
+              <i class="pi pi-calendar"></i>
+              {{ formatearFecha(vacuna.fecha_aplicacion) }}
+            </td>
+            <td>
+              <i class="pi pi-calendar-plus"></i>
+              {{ formatearFecha(vacuna.proxima_dosis) }}
+            </td>
+            <td>
+              <span [class]="'badge badge-vacuna-' + vacuna.estado_vacunacion?.toLowerCase().replace(' ', '-')">
+                {{ vacuna.estado_vacunacion }}
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+        
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5" style="text-align: center; padding: 2rem;">
+              <i class="pi pi-info-circle" style="font-size: 2rem; color: #999;"></i>
+              <p style="margin: 0.5rem 0 0 0; color: #666;">
+                No hay vacunas registradas para este animal
+              </p>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+
+    <!-- Footer -->
+    <div class="ficha-footer">
+      <div class="footer-content">
+        <div class="footer-info">
+          <img src="favicon.png" alt="Logo" class="footer-logo">
+          <div>
+            <p><strong>Sistema de Gestión Ganadera - Corpogam</strong></p>
+            <p>Documento generado automáticamente</p>
+            <p class="fecha-generacion">Fecha de generación: {{ datos.fecha_informe }}</p>
+          </div>
+        </div>
+        
+        <div class="footer-qr-info no-print">
+          <i class="pi pi-qrcode"></i>
+          <p>Esta ficha fue accedida mediante código QR</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

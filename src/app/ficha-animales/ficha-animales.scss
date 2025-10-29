@@ -1,0 +1,390 @@
+.ficha-publica-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem 1rem;
+
+  // Estados de carga y error
+  .loading-state,
+  .error-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    color: white;
+    text-align: center;
+    gap: 1.5rem;
+
+    h2 {
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 500px;
+    }
+  }
+
+  // Contenido de la ficha
+  .ficha-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+  }
+
+  // Header
+  .ficha-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+
+    .header-info {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+
+      .logo {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 700;
+      }
+
+      .subtitle {
+        margin: 0.5rem 0 0 0;
+        opacity: 0.9;
+        font-size: 1rem;
+      }
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+
+  // Fecha del informe
+  .fecha-informe {
+    background: #f8f9fa;
+    padding: 1rem 2rem;
+    border-bottom: 2px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1rem;
+
+    i {
+      color: #667eea;
+      font-size: 1.2rem;
+    }
+  }
+
+  // Cards
+  .ficha-card {
+    margin: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 10px 10px 0 0;
+
+      i {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+    }
+  }
+
+  // Grid de información
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      &.full-width {
+        grid-column: 1 / -1;
+      }
+
+      &.destacado {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 4px solid #667eea;
+      }
+
+      &.genealogia {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+
+        small {
+          color: #666;
+          font-size: 0.85rem;
+          margin-top: 0.25rem;
+        }
+      }
+
+      label {
+        font-weight: 600;
+        color: #555;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        i {
+          color: #667eea;
+        }
+      }
+
+      span {
+        font-size: 1.05rem;
+        color: #333;
+
+        &.valor-destacado {
+          font-size: 1.3rem;
+          font-weight: 700;
+          color: #667eea;
+        }
+      }
+    }
+  }
+
+  // Badges
+  .badge {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &.badge-m {
+      background: #e3f2fd;
+      color: #1565c0;
+    }
+
+    &.badge-h {
+      background: #fce4ec;
+      color: #c2185b;
+    }
+
+    &.badge-etapa {
+      background: #f3e5f5;
+      color: #7b1fa2;
+    }
+
+    &.badge-estado-vivo {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    &.badge-estado-muerto {
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    &.badge-estado-vendido {
+      background: #fff3e0;
+      color: #ef6c00;
+    }
+
+    &.badge-vacuna-a-tiempo {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    &.badge-vacuna-próximo {
+      background: #fff3e0;
+      color: #ef6c00;
+    }
+
+    &.badge-vacuna-urgente {
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    &.badge-vacuna-sin-fecha {
+      background: #f5f5f5;
+      color: #757575;
+    }
+  }
+
+  // Tabla de vacunas
+  .numero-vacuna {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  // Footer
+  .ficha-footer {
+    background: #f8f9fa;
+    padding: 2rem;
+    margin-top: 2rem;
+    border-top: 3px solid #e0e0e0;
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+
+      .footer-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .footer-logo {
+          width: 50px;
+          height: 50px;
+          object-fit: contain;
+        }
+
+        p {
+          margin: 0.25rem 0;
+          color: #666;
+          font-size: 0.9rem;
+
+          strong {
+            color: #333;
+          }
+        }
+
+        .fecha-generacion {
+          color: #999;
+          font-size: 0.85rem;
+        }
+      }
+
+      .footer-qr-info {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1.25rem;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        border-radius: 25px;
+
+        i {
+          font-size: 1.5rem;
+          color: #667eea;
+        }
+
+        p {
+          margin: 0;
+          color: #667eea;
+          font-weight: 600;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}
+
+// Estilos para impresión
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .ficha-publica-container {
+    background: white;
+    padding: 0;
+
+    .ficha-content {
+      box-shadow: none;
+    }
+
+    .ficha-header {
+      background: white;
+      color: black;
+      border-bottom: 3px solid #667eea;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .ficha-publica-container {
+    padding: 1rem 0.5rem;
+
+    .ficha-header {
+      flex-direction: column;
+      text-align: center;
+
+      .header-info {
+        flex-direction: column;
+        text-align: center;
+
+        h1 {
+          font-size: 1.5rem;
+        }
+      }
+
+      .header-actions {
+        width: 100%;
+        justify-content: center;
+
+        button {
+          flex: 1;
+        }
+      }
+    }
+
+    .info-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .ficha-footer {
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+
+        .footer-info {
+          flex-direction: column;
+        }
+      }
+    }
+  }
+}

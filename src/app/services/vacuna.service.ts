@@ -111,4 +111,7 @@ export class VacunaService {
     console.error('Error en VacunaService:', errorMessage);
     return throwError(() => new Error(errorMessage));
   }
+  actualizarVacunaCompleta(idVacunaAnimal: number, datos: {fecha_aplicacion: string, proxima_dosis: string}): Observable<any> {
+    return this.http.put(`${this.apiUrl}/aplicadas/${idVacunaAnimal}/completo`, datos);
+  }
 }

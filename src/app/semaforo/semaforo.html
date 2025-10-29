@@ -44,109 +44,237 @@
   </aside>
 
   <main>
-    <h1>Bienvenido, al estado de Vacunas</h1>
+  <h1>Bienvenido, al estado de Vacunas</h1>
 
-    <div class="date">
-      <p>{{ fechaActual }}, {{ horaActual }}</p>
+  <div class="date">
+    <p>{{ fechaActual }}, {{ horaActual }}</p>
+  </div>
+
+  <!-- Mensaje de carga -->
+  <div *ngIf="cargando" class="loading">Cargando vacunas...</div>
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+
+  <!-- ⭐ Vacunas a Tiempo (Verde) -->
+  <div class="tbl_semaforo">
+    <div class="tabla-header">
+      <h2>Vacunas a Tiempo ({{ vacunasATiempoFiltradas.length }}/{{ vacunasATiempo.length }})</h2>
+      <div class="buscador">
+        <input 
+          type="text" 
+          placeholder="🔍 Buscar por código, alias o vacuna..."
+          [(ngModel)]="busquedaATiempo"
+          class="input-buscar"
+        >
+        <button 
+          *ngIf="busquedaATiempo" 
+          class="btn-limpiar"
+          (click)="limpiarBusqueda('aTiempo')"
+          title="Limpiar búsqueda"
+        >
+          ✕
+        </button>
+      </div>
     </div>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Código del Animal</th>
+          <th>Alias</th>
+          <th>Vacuna</th>
+          <th>Fecha de Aplicación</th>
+          <th>Próxima Dosis</th>
+          <th>Estado</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vacuna of vacunasATiempoFiltradas">
+          <td>{{ vacuna.codigo_animal }}</td>
+          <td>{{ vacuna.alias }}</td>
+          <td>{{ vacuna.nombre_vacuna }}</td>
+          <td>{{ formatearFecha(vacuna.fecha_aplicacion) }}</td>
+          <td>{{ formatearFecha(vacuna.proxima_dosis) }}</td>
+          <td class="success">{{ obtenerEstadoTexto(vacuna) }}</td>
+          <td><button class="btn-modal" (click)="abrirModal(vacuna)">Actualizar</button></td>
+        </tr>
+        <tr *ngIf="vacunasATiempoFiltradas.length === 0 && busquedaATiempo">
+          <td colspan="7" style="text-align: center;">
+            No se encontraron resultados para "{{ busquedaATiempo }}"
+          </td>
+        </tr>
+        <tr *ngIf="vacunasATiempo.length === 0 && !busquedaATiempo">
+          <td colspan="7" style="text-align: center;">No hay vacunas en este estado</td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+  </div>
 
-    <!-- Mensaje de carga -->
-    <div *ngIf="cargando" class="loading">Cargando vacunas...</div>
-    <div *ngIf="error" class="error-message">{{ error }}</div>
-
-    <!-- Vacunas a Tiempo (Verde) -->
-    <div class="tbl_semaforo">
-      <h2>Vacunas a Tiempo ({{ vacunasATiempo.length }})</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Código del Animal</th>
-            <th>Alias</th>
-            <th>Vacuna</th>
-            <th>Fecha de Aplicación</th>
-            <th>Próxima Dosis</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let vacuna of vacunasATiempo">
-            <td>{{ vacuna.codigo_animal }}</td>
-            <td>{{ vacuna.alias }}</td>
-            <td>{{ vacuna.nombre_vacuna }}</td>
-            <td>{{ formatearFecha(vacuna.fecha_aplicacion) }}</td>
-            <td>{{ formatearFecha(vacuna.proxima_dosis) }}</td>
-            <td class="success">{{ obtenerEstadoTexto(vacuna) }}</td>
-          </tr>
-          <tr *ngIf="vacunasATiempo.length === 0">
-            <td colspan="6" style="text-align: center;">No hay vacunas en este estado</td>
-          </tr>
-        </tbody>
-      </table>
-      <br>
+  <!-- ⭐ Vacunas Próximas a Vencer (Amarillo) -->
+  <div class="tbl_semaforo">
+    <div class="tabla-header">
+      <h2>Vacunas Próximas a Vencer ({{ vacunasProximasFiltradas.length }}/{{ vacunasProximas.length }})</h2>
+      <div class="buscador">
+        <input 
+          type="text" 
+          placeholder="🔍 Buscar por código, alias o vacuna..."
+          [(ngModel)]="busquedaProximas"
+          class="input-buscar"
+        >
+        <button 
+          *ngIf="busquedaProximas" 
+          class="btn-limpiar"
+          (click)="limpiarBusqueda('proximas')"
+          title="Limpiar búsqueda"
+        >
+          ✕
+        </button>
+      </div>
     </div>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Código del Animal</th>
+          <th>Alias</th>
+          <th>Vacuna</th>
+          <th>Fecha de Aplicación</th>
+          <th>Próxima Dosis</th>
+          <th>Estado</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vacuna of vacunasProximasFiltradas">
+          <td>{{ vacuna.codigo_animal }}</td>
+          <td>{{ vacuna.alias }}</td>
+          <td>{{ vacuna.nombre_vacuna }}</td>
+          <td>{{ formatearFecha(vacuna.fecha_aplicacion) }}</td>
+          <td>{{ formatearFecha(vacuna.proxima_dosis) }}</td>
+          <td class="warning">Próximo a Vencer</td>
+          <td><button class="btn-modal warning-btn" (click)="abrirModal(vacuna)">Actualizar</button></td>
+        </tr>
+        <tr *ngIf="vacunasProximasFiltradas.length === 0 && busquedaProximas">
+          <td colspan="7" style="text-align: center;">
+            No se encontraron resultados para "{{ busquedaProximas }}"
+          </td>
+        </tr>
+        <tr *ngIf="vacunasProximas.length === 0 && !busquedaProximas">
+          <td colspan="7" style="text-align: center;">No hay vacunas en este estado</td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+  </div>
 
-    <!-- Vacunas Próximas a Vencer (Amarillo) -->
-    <div class="tbl_semaforo">
-      <h2>Vacunas Próximas a Vencer ({{ vacunasProximas.length }})</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Código del Animal</th>
-            <th>Alias</th>
-            <th>Vacuna</th>
-            <th>Fecha de Aplicación</th>
-            <th>Próxima Dosis</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let vacuna of vacunasProximas">
-            <td>{{ vacuna.codigo_animal }}</td>
-            <td>{{ vacuna.alias }}</td>
-            <td>{{ vacuna.nombre_vacuna }}</td>
-            <td>{{ formatearFecha(vacuna.fecha_aplicacion) }}</td>
-            <td>{{ formatearFecha(vacuna.proxima_dosis) }}</td>
-            <td class="warning">Próximo a Vencer</td>
-          </tr>
-          <tr *ngIf="vacunasProximas.length === 0">
-            <td colspan="6" style="text-align: center;">No hay vacunas en este estado</td>
-          </tr>
-        </tbody>
-      </table>
-      <br>
+  <!-- ⭐ Vacunas Vencidas (Rojo) -->
+  <div class="tbl_semaforo">
+    <div class="tabla-header">
+      <h2>Vacunas Vencidas ({{ vacunasVencidasFiltradas.length }}/{{ vacunasVencidas.length }})</h2>
+      <div class="buscador">
+        <input 
+          type="text" 
+          placeholder="🔍 Buscar por código, alias o vacuna..."
+          [(ngModel)]="busquedaVencidas"
+          class="input-buscar"
+        >
+        <button 
+          *ngIf="busquedaVencidas" 
+          class="btn-limpiar"
+          (click)="limpiarBusqueda('vencidas')"
+          title="Limpiar búsqueda"
+        >
+          ✕
+        </button>
+      </div>
     </div>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Código del Animal</th>
+          <th>Alias</th>
+          <th>Vacuna</th>
+          <th>Fecha de Aplicación</th>
+          <th>Próxima Dosis</th>
+          <th>Estado</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vacuna of vacunasVencidasFiltradas">
+          <td>{{ vacuna.codigo_animal }}</td>
+          <td>{{ vacuna.alias }}</td>
+          <td>{{ vacuna.nombre_vacuna }}</td>
+          <td>{{ formatearFecha(vacuna.fecha_aplicacion) }}</td>
+          <td>{{ formatearFecha(vacuna.proxima_dosis) }}</td>
+          <td class="danger">Vencida - Urgente</td>
+          <td><button class="btn-modal danger-btn" (click)="abrirModal(vacuna)">Actualizar</button></td>
+        </tr>
+        <tr *ngIf="vacunasVencidasFiltradas.length === 0 && busquedaVencidas">
+          <td colspan="7" style="text-align: center;">
+            No se encontraron resultados para "{{ busquedaVencidas }}"
+          </td>
+        </tr>
+        <tr *ngIf="vacunasVencidas.length === 0 && !busquedaVencidas">
+          <td colspan="7" style="text-align: center;">No hay vacunas en este estado</td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+  </div>
+</main>
+  <!-- Modal-->
+   <div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Actualizar Vacuna</h2>
+      <button class="btn-cerrar" (click)="cerrarModal()">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="info-animal">
+        <p><strong>Animal:</strong> {{ vacunaSeleccionada?.codigo_animal }} - {{ vacunaSeleccionada?.alias }}</p>
+        <p><strong>Vacuna:</strong> {{ vacunaSeleccionada?.nombre_vacuna }}</p>
+      </div>
 
-    <!-- Vacunas Vencidas (Rojo) -->
-    <div class="tbl_semaforo">
-      <h2>Vacunas Vencidas ({{ vacunasVencidas.length }})</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Código del Animal</th>
-            <th>Alias</th>
-            <th>Vacuna</th>
-            <th>Fecha de Aplicación</th>
-            <th>Próxima Dosis</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let vacuna of vacunasVencidas">
-            <td>{{ vacuna.codigo_animal }}</td>
-            <td>{{ vacuna.alias }}</td>
-            <td>{{ vacuna.nombre_vacuna }}</td>
-            <td>{{ formatearFecha(vacuna.fecha_aplicacion) }}</td>
-            <td>{{ formatearFecha(vacuna.proxima_dosis) }}</td>
-            <td class="danger">Vencida - Urgente</td>
-          </tr>
-          <tr *ngIf="vacunasVencidas.length === 0">
-            <td colspan="6" style="text-align: center;">No hay vacunas en este estado</td>
-          </tr>
-        </tbody>
-      </table>
-      <br>
+      <form (ngSubmit)="actualizarVacuna()">
+        <div class="form-group">
+          <label for="fechaAplicacion">Nueva Fecha de Aplicación:</label>
+          <input 
+            type="date" 
+            id="fechaAplicacion" 
+            [(ngModel)]="nuevaFechaAplicacion"
+            name="fechaAplicacion"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="proximaDosis">Nueva Próxima Dosis:</label>
+          <input 
+            type="date" 
+            id="proximaDosis" 
+            [(ngModel)]="nuevaProximaDosis"
+            name="proximaDosis"
+            required
+          >
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+          <button type="submit" class="btn-guardar" [disabled]="guardando">
+            {{ guardando ? 'Guardando...' : 'Guardar Cambios' }}
+          </button>
+        </div>
+      </form>
+
+      <div *ngIf="mensajeExito" class="mensaje-exito">{{ mensajeExito }}</div>
+      <div *ngIf="mensajeError" class="mensaje-error">{{ mensajeError }}</div>
     </div>
-  </main>
+  </div>
+</div>
 
   <div class="barra">
     <div class="top">
